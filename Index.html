@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+
+<html lang="en" style="background:#0a0a0a;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark"><title>Daisy · Prompt Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8d49a;
+    --warm-gray: #2a2520;
+    --mid-gray: #6b6560;
+    --accent: #d4622a;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+background: #0a0a0a !important;
+background-color: #0a0a0a !important;
+color: #f5f0e8 !important;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+background: #0a0a0a;
+color: var(–cream);
+font-family: ‘DM Sans’, sans-serif;
+overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 9999;
+opacity: 0.4;
+}
+
+/* NAV */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+padding: 24px 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+}
+
+.nav-logo {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+letter-spacing: 0.15em;
+color: var(–gold);
+text-transform: uppercase;
+}
+
+.nav-links {
+display: flex;
+gap: 36px;
+list-style: none;
+}
+
+.nav-links a {
+color: var(–cream);
+text-decoration: none;
+font-size: 0.8rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+opacity: 0.7;
+transition: opacity 0.2s;
+}
+
+.nav-links a:hover { opacity: 1; color: var(–gold); }
+
+/* HERO */
+.hero {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 1fr 1fr;
+position: relative;
+overflow: hidden;
+}
+
+.hero-left {
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 120px 48px 80px;
+position: relative;
+z-index: 2;
+}
+
+.hero-tag {
+font-size: 0.7rem;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.hero-tag::before {
+content: ‘’;
+width: 40px;
+height: 1px;
+background: var(–gold);
+}
+
+.hero-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(3rem, 5vw, 5.5rem);
+line-height: 1.05;
+font-weight: 900;
+margin-bottom: 28px;
+}
+
+.hero-title em {
+font-style: italic;
+color: var(–gold);
+}
+
+.hero-subtitle {
+font-size: 1rem;
+line-height: 1.7;
+color: #d4cfc7;
+max-width: 420px;
+margin-bottom: 48px;
+}
+
+.hero-cta {
+display: inline-flex;
+align-items: center;
+gap: 16px;
+background: var(–gold);
+color: var(–black);
+padding: 16px 32px;
+font-size: 0.8rem;
+font-weight: 500;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+text-decoration: none;
+width: fit-content;
+transition: all 0.3s;
+position: relative;
+overflow: hidden;
+}
+
+.hero-cta::after {
+content: ‘→’;
+transition: transform 0.2s;
+}
+
+.hero-cta:hover {
+background: var(–cream);
+transform: translateY(-2px);
+}
+
+.hero-cta:hover::after { transform: translateX(4px); }
+
+.hero-right {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.hero-card {
+background: #2a2520;
+border: 1px solid rgba(201,168,76,0.2);
+padding: 40px;
+width: 380px;
+position: relative;
+animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+0%, 100% { transform: translateY(0px); }
+50% { transform: translateY(-12px); }
+}
+
+.hero-card::before {
+content: ‘’;
+position: absolute;
+top: -1px; left: 40px; right: 40px;
+height: 2px;
+background: var(–gold);
+}
+
+.card-label {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 16px;
+}
+
+.card-before {
+background: rgba(0,0,0,0.4);
+padding: 16px;
+font-size: 0.85rem;
+line-height: 1.6;
+color: #b0aba3;
+margin-bottom: 12px;
+border-left: 2px solid #444;
+font-family: ‘DM Mono’, monospace;
+}
+
+.card-after {
+background: rgba(201,168,76,0.08);
+padding: 16px;
+font-size: 0.85rem;
+line-height: 1.6;
+color: var(–cream);
+border-left: 2px solid var(–gold);
+font-family: ‘DM Mono’, monospace;
+}
+
+.card-arrow {
+text-align: center;
+color: var(–gold);
+font-size: 1.2rem;
+margin: 8px 0;
+}
+
+/* SECTION BASE */
+section {
+padding: 100px 48px;
+max-width: 1200px;
+margin: 0 auto;
+}
+
+.section-tag {
+font-size: 0.65rem;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.section-tag::before {
+content: ‘’;
+width: 30px;
+height: 1px;
+background: var(–gold);
+}
+
+.section-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2rem, 3.5vw, 3.2rem);
+font-weight: 700;
+line-height: 1.1;
+margin-bottom: 60px;
+}
+
+/* SERVICES */
+#services { background: #0a0a0a; }
+
+.services-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1px;
+background: rgba(201,168,76,0.15);
+border: 1px solid rgba(201,168,76,0.15);
+}
+
+.service-card {
+background: #0a0a0a;
+padding: 40px 32px;
+transition: background 0.3s;
+cursor: default;
+}
+
+.service-card:hover { background: #2a2520; }
+
+.service-num {
+font-family: ‘Playfair Display’, serif;
+font-size: 3rem;
+color: rgba(201,168,76,0.2);
+font-weight: 900;
+margin-bottom: 16px;
+}
+
+.service-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.2rem;
+margin-bottom: 12px;
+color: var(–cream);
+}
+
+.service-desc { color: #a09b94 !important;
+font-size: 0.85rem;
+line-height: 1.7;
+color: var(–mid-gray);
+}
+
+.service-price {
+margin-top: 20px;
+font-size: 0.75rem;
+letter-spacing: 0.1em;
+color: var(–gold);
+font-weight: 500;
+}
+
+/* HOOKS SECTION */
+#hooks {
+background: #2a2520;
+max-width: 100%;
+border-top: 1px solid rgba(201,168,76,0.15);
+border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+
+#hooks > .inner { max-width: 1200px; margin: 0 auto; padding: 100px 48px; }
+
+.hooks-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 16px;
+}
+
+.hook-card {
+background: #0a0a0a;
+border: 1px solid rgba(201,168,76,0.1);
+padding: 28px;
+position: relative;
+transition: border-color 0.3s, transform 0.2s;
+cursor: pointer;
+}
+
+.hook-card:hover {
+border-color: var(–gold);
+transform: translateX(4px);
+}
+
+.hook-num {
+position: absolute;
+top: 16px; right: 16px;
+font-family: ‘Playfair Display’, serif;
+font-size: 2rem;
+color: rgba(201,168,76,0.12);
+font-weight: 900;
+}
+
+.hook-type {
+font-size: 0.6rem;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 10px;
+}
+
+.hook-text {
+font-size: 0.95rem;
+line-height: 1.65;
+color: var(–cream);
+margin-bottom: 12px;
+}
+
+.hook-text strong { color: var(–gold); }
+
+.hook-why { color: #a09b94 !important;
+font-size: 0.75rem;
+color: var(–mid-gray);
+line-height: 1.5;
+border-top: 1px solid rgba(255,255,255,0.06);
+padding-top: 10px;
+}
+
+/* CASE STUDY */
+.before-after-wrap {
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+gap: 24px;
+align-items: center;
+margin-top: 40px;
+}
+
+.ba-box {
+padding: 32px;
+font-size: 0.9rem;
+line-height: 1.75;
+}
+
+.ba-before {
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(255,255,255,0.08);
+color: #b8b3ab;
+}
+
+.ba-after {
+background: rgba(201,168,76,0.06);
+border: 1px solid rgba(201,168,76,0.25);
+}
+
+.ba-label {
+font-size: 0.6rem;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+margin-bottom: 16px;
+font-weight: 500;
+}
+
+.ba-before .ba-label { color: #666; }
+.ba-after .ba-label { color: var(–gold); }
+
+.ba-arrow {
+font-size: 2rem;
+color: var(–gold);
+text-align: center;
+}
+
+/* SIMULATOR */
+#simulator { background: #0a0a0a; }
+
+.chat-wrap {
+background: #2a2520;
+border: 1px solid rgba(201,168,76,0.2);
+border-radius: 0;
+overflow: hidden;
+max-width: 720px;
+margin: 0 auto;
+}
+
+.chat-header {
+background: rgba(201,168,76,0.08);
+border-bottom: 1px solid rgba(201,168,76,0.15);
+padding: 16px 24px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.chat-avatar {
+width: 36px; height: 36px;
+border-radius: 50%;
+background: var(–gold);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.9rem;
+font-weight: 700;
+color: var(–black);
+}
+
+.chat-name {
+font-size: 0.85rem;
+font-weight: 500;
+}
+
+.chat-status {
+font-size: 0.7rem;
+color: var(–mid-gray);
+}
+
+.chat-messages {
+padding: 28px 24px;
+display: flex;
+flex-direction: column;
+gap: 16px;
+min-height: 400px;
+max-height: 500px;
+overflow-y: auto;
+}
+
+.msg {
+display: flex;
+gap: 10px;
+animation: msgIn 0.3s ease both;
+opacity: 0;
+}
+
+@keyframes msgIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.msg.them { flex-direction: row; }
+.msg.you { flex-direction: row-reverse; }
+
+.msg-bubble {
+max-width: 75%;
+padding: 12px 16px;
+font-size: 0.88rem;
+line-height: 1.6;
+}
+
+.them .msg-bubble {
+background: rgba(255,255,255,0.07);
+color: var(–cream);
+border-radius: 0 12px 12px 12px;
+}
+
+.you .msg-bubble {
+background: var(–gold);
+color: var(–black);
+border-radius: 12px 0 12px 12px;
+font-weight: 500;
+}
+
+.msg-label {
+font-size: 0.65rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–mid-gray);
+margin-top: 4px;
+padding: 0 4px;
+}
+
+.you .msg-label { text-align: right; }
+
+.chat-actions {
+padding: 16px 24px;
+border-top: 1px solid rgba(255,255,255,0.06);
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+}
+
+.chat-btn {
+background: transparent;
+border: 1px solid rgba(201,168,76,0.3);
+color: var(–gold);
+padding: 8px 16px;
+font-size: 0.75rem;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+letter-spacing: 0.05em;
+transition: all 0.2s;
+}
+
+.chat-btn:hover {
+background: var(–gold);
+color: var(–black);
+}
+
+.chat-reset {
+background: transparent;
+border: 1px solid rgba(255,255,255,0.1);
+color: var(–mid-gray);
+padding: 8px 16px;
+font-size: 0.75rem;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+margin-left: auto;
+transition: all 0.2s;
+}
+
+.chat-reset:hover { color: var(–cream); border-color: rgba(255,255,255,0.3); }
+
+.chat-tip {
+padding: 12px 24px;
+background: rgba(201,168,76,0.05);
+border-top: 1px solid rgba(201,168,76,0.1);
+font-size: 0.75rem;
+color: var(–mid-gray);
+}
+
+.chat-tip strong { color: var(–gold); }
+
+/* OFFER BOX */
+.offer-box {
+border: 1px solid var(–gold);
+padding: 60px;
+position: relative;
+background: rgba(201,168,76,0.03);
+margin-top: 0;
+}
+
+.offer-box::before {
+content: ‘★ SIGNATURE OFFER ★’;
+position: absolute;
+top: -10px;
+left: 50%;
+transform: translateX(-50%);
+background: #0a0a0a;
+padding: 0 16px;
+font-size: 0.6rem;
+letter-spacing: 0.3em;
+color: var(–gold);
+}
+
+.offer-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.2rem;
+margin-bottom: 8px;
+}
+
+.offer-tagline { color: #ccc7bf !important;
+color: var(–mid-gray);
+font-size: 0.95rem;
+margin-bottom: 40px;
+}
+
+.offer-items {
+list-style: none;
+margin-bottom: 40px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+}
+
+.offer-items li {
+font-size: 0.88rem;
+color: var(–cream);
+display: flex;
+align-items: flex-start;
+gap: 10px;
+line-height: 1.5;
+}
+
+.offer-items li::before {
+content: ‘✦’;
+color: var(–gold);
+font-size: 0.7rem;
+margin-top: 3px;
+flex-shrink: 0;
+}
+
+.offer-footer {
+display: flex;
+align-items: center;
+gap: 32px;
+flex-wrap: wrap;
+}
+
+.offer-price {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.8rem;
+color: var(–gold);
+font-weight: 700;
+}
+
+.offer-price span {
+font-size: 1rem;
+color: var(–mid-gray);
+text-decoration: line-through;
+margin-left: 8px;
+}
+
+.offer-cta {
+background: var(–gold);
+color: var(–black);
+border: none;
+padding: 16px 36px;
+font-size: 0.85rem;
+font-weight: 600;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.3s;
+}
+
+.offer-cta:hover { background: var(–cream); transform: translateY(-2px); }
+
+/* TESTIMONIAL PLACEHOLDER */
+.testimonials {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 24px;
+margin-top: 60px;
+}
+
+.testi {
+background: #2a2520;
+padding: 28px;
+border-top: 2px solid var(–gold);
+}
+
+.testi-text {
+font-size: 0.88rem;
+line-height: 1.7;
+color: #ccc7bf;
+margin-bottom: 20px;
+font-style: italic;
+}
+
+.testi-author {
+font-size: 0.75rem;
+font-weight: 600;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+}
+
+.testi-role {
+font-size: 0.72rem;
+color: var(–mid-gray);
+margin-top: 3px;
+}
+
+/* FOOTER */
+footer {
+border-top: 1px solid rgba(201,168,76,0.2);
+padding: 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.footer-logo {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.3rem;
+color: var(–gold);
+}
+
+.footer-note {
+font-size: 0.75rem;
+color: var(–mid-gray);
+}
+
+/* DIVIDER */
+.gold-divider {
+width: 60px;
+height: 1px;
+background: var(–gold);
+margin: 0 auto 60px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+nav { padding: 20px 24px; }
+.nav-links { display: none; }
+.hero { grid-template-columns: 1fr; }
+.hero-right { display: none; }
+.hero-left { padding: 100px 24px 60px; }
+section { padding: 60px 24px; }
+.services-grid { grid-template-columns: 1fr; }
+.hooks-grid { grid-template-columns: 1fr; }
+.before-after-wrap { grid-template-columns: 1fr; }
+.ba-arrow { transform: rotate(90deg); }
+.offer-box { padding: 32px 24px; }
+.offer-items { grid-template-columns: 1fr; }
+.testimonials { grid-template-columns: 1fr; }
+footer { flex-direction: column; gap: 16px; text-align: center; }
+#hooks > .inner { padding: 60px 24px; }
+}
+
+/* Scroll animations */
+.fade-up {
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.offer-items li { color: #f5f0e8 !important; } .offer-tagline { color: #ccc7bf !important; } .testi-text { color: #ccc7bf !important; } .hero-subtitle { color: #d4cfc7 !important; } section { background-color: #0a0a0a; }</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav>
+  <div class="nav-logo">Daisy · Prompt Engineer</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#hooks">Hook Library</a></li>
+    <li><a href="#simulator">Simulator</a></li>
+    <li><a href="#offer">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">TikTok AI Content Specialist</div>
+    <h1 class="hero-title">
+      I make your<br>AI write like<br><em>you</em> — not<br>like everyone else.
+    </h1>
+    <p class="hero-subtitle">
+      Most creators waste hours fighting AI for generic content. I engineer custom prompt systems that produce scroll-stopping scripts, hooks, and captions — in your exact voice — in minutes.
+    </p>
+    <a href="#offer" class="hero-cta">See What's Possible</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="card-label">✦ Real transformation</div>
+      <div class="card-before">"Hey guys! Check out this amazing wig. It looks so natural. Link in bio!"</div>
+      <div class="card-arrow">↓ engineered prompt</div>
+      <div class="card-after">"POV: You spent $300 at the salon and it still doesn't look like THIS 👀 Comment 'MELT' for my install method — this is the last wig you'll ever have to explain 😭🔥"</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+
+<section id="services">
+  <div class="section-tag">What I Do</div>
+  <h2 class="section-title fade-up">Three ways I help<br>creators make more money.</h2>
+  <div class="services-grid fade-up">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">AI Voice System</div>
+      <div class="service-desc">A complete prompt library built around your brand voice, niche, and audience. Scripts, hooks, captions — all sounding like you, generated in minutes.</div>
+      <div class="service-price">From $197</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">Hook & Script Audit</div>
+      <div class="service-desc">I review your last 10 videos, rewrite 5 hooks using engineered prompts, and show you the exact system to replicate it yourself.</div>
+      <div class="service-price">From $97</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">Monthly Retainer</div>
+      <div class="service-desc">I become your AI content partner. Weekly prompt updates, new templates, and on-call rewrites as your brand evolves and grows.</div>
+      <div class="service-price">From $497/mo</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+
+<section id="work" style="border-top: 1px solid rgba(201,168,76,0.1);">
+  <div class="section-tag">Case Study</div>
+  <h2 class="section-title fade-up">The wig creator<br><em>before & after.</em></h2>
+  <div class="before-after-wrap fade-up">
+    <div class="ba-box ba-before">
+      <div class="ba-label">❌ Before — Generic AI</div>
+      "Hey guys, today I'm going to show you this beautiful lace front wig. It has 180% density and it looks very natural. You can style it many ways. Link in bio to shop!"
+    </div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-box ba-after">
+      <div class="ba-label">✦ After — Engineered Prompt</div>
+      "POV: You spent $300 at the salon and your hair still doesn't look like this 👀 This is a lace front, 180% density — installed in 20 minutes at home. No glue. No appointment. No awkward small talk with your stylist. Comment 'MELT' and I'll send you my exact install method. This is the last wig you'll ever have to explain to people 😭🔥"
+    </div>
+  </div>
+</section>
+
+<!-- HOOKS SECTION -->
+
+<div id="hooks" style="background: #2a2520; border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15);">
+<div class="inner">
+  <div class="section-tag">Hook Library</div>
+  <h2 class="section-title fade-up">10 proven wig hooks<br><em>engineered to stop scrolls.</em></h2>
+  <div class="hooks-grid">
+
+```
+<div class="hook-card fade-up">
+  <div class="hook-num">01</div>
+  <div class="hook-type">POV Contrast</div>
+  <div class="hook-text">POV: You spent <strong>$300 at the salon</strong> and it still doesn't look like THIS 👀</div>
+  <div class="hook-why">Why it works: Creates immediate contrast between pain (wasted money) and solution. Stops the scroll with relatability.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">02</div>
+  <div class="hook-type">Curiosity Gap</div>
+  <div class="hook-text">I've been keeping this wig secret for 6 months… and today <strong>I'm finally showing you why</strong> 👇</div>
+  <div class="hook-why">Why it works: Creates urgency + mystery. Viewer must watch to close the information gap.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">03</div>
+  <div class="hook-type">Bold Claim</div>
+  <div class="hook-text">This $89 wig made three people stop me at Target to ask <strong>who did my hair</strong> 😭</div>
+  <div class="hook-why">Why it works: Social proof baked into the hook. Real-world validation creates desire instantly.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">04</div>
+  <div class="hook-type">Transformation</div>
+  <div class="hook-text">Watch me go from <strong>stressed edges to snatched</strong> in literally 15 minutes flat ⏱️</div>
+  <div class="hook-why">Why it works: Before/after transformation hooks get 3x more watch time. The timer creates urgency.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">05</div>
+  <div class="hook-type">Controversy / Hot Take</div>
+  <div class="hook-text">I'm sorry but <strong>cheap wigs actually slap harder</strong> than expensive ones — here's proof 🧾</div>
+  <div class="hook-why">Why it works: Challenges a common belief. People comment to agree or disagree = algorithm fuel.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">06</div>
+  <div class="hook-type">Identity / Belonging</div>
+  <div class="hook-text">If you think lace wigs are too complicated — <strong>this video is literally for you</strong> 🫵</div>
+  <div class="hook-why">Why it works: Speaks directly to an identity. Makes the viewer feel personally called in, not out.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">07</div>
+  <div class="hook-type">Story Setup</div>
+  <div class="hook-text">So my sister called me crying because her wig looked a mess for her date… <strong>so I fixed it in 10 minutes</strong> 😅</div>
+  <div class="hook-why">Why it works: Narrative tension + emotional stakes = viewer watches for the resolution.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">08</div>
+  <div class="hook-type">Number / List</div>
+  <div class="hook-text"><strong>5 signs your wig is aging you</strong> (and exactly how to fix each one) ✋</div>
+  <div class="hook-why">Why it works: List format signals quick value. "Aging you" triggers vanity — one of the strongest emotional drivers.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">09</div>
+  <div class="hook-type">Pattern Interrupt</div>
+  <div class="hook-text">Wait— <strong>you're installing your wig WRONG</strong> and it's ruining the lace 😬</div>
+  <div class="hook-why">Why it works: Accusatory but helpful. The "wait—" forces a pattern break mid-scroll. Fear of doing it wrong drives clicks.</div>
+</div>
+
+<div class="hook-card fade-up">
+  <div class="hook-num">10</div>
+  <div class="hook-type">Dream Outcome</div>
+  <div class="hook-text">Imagine waking up, <strong>throwing on a full glam wig in 8 minutes</strong>, and walking out the door looking like this 💅</div>
+  <div class="hook-why">Why it works: Paints the dream outcome vividly. Taps into the desire for ease + beauty simultaneously.</div>
+</div>
+```
+
+  </div>
+</div>
+</div>
+
+<!-- SIMULATOR -->
+
+<section id="simulator">
+  <div class="section-tag">Client Simulator</div>
+  <h2 class="section-title fade-up" style="text-align:center;">Practice the exact conversation<br><em>before it happens.</em></h2>
+  <div class="gold-divider"></div>
+
+  <div class="chat-wrap fade-up">
+    <div class="chat-header">
+      <div class="chat-avatar">W</div>
+      <div>
+        <div class="chat-name">Wigs by Destiny</div>
+        <div class="chat-status">TikTok Creator · 18.4K followers</div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-actions" id="chatActions"></div>
+    <div class="chat-tip" id="chatTip"><strong>💡 Tip:</strong> Click a response to see how the conversation unfolds. Each choice teaches you a real sales skill.</div>
+  </div>
+</section>
+
+<!-- OFFER -->
+
+<section id="offer" style="border-top: 1px solid rgba(201,168,76,0.1);">
+  <div class="section-tag">The Offer</div>
+  <h2 class="section-title fade-up">Your investment.<br><em>Your results.</em></h2>
+  <div class="offer-box fade-up">
+    <div class="offer-title">The TikTok AI Voice System</div>
+    <div class="offer-tagline">A custom AI prompt system that writes in your voice — so you never stare at a blank screen again.</div>
+    <ul class="offer-items">
+      <li>Brand Voice Profile prompt (trained on your tone & niche)</li>
+      <li>10 done-for-you hooks written in your voice</li>
+      <li>1 plug-and-play script template system</li>
+      <li>30 caption templates with embedded CTAs</li>
+      <li>20-min Loom walkthrough so you can use it yourself</li>
+      <li>1 full round of revisions included</li>
+      <li>Delivered in 5 business days via Notion/Google Doc</li>
+      <li>Direct DM access during delivery window</li>
+    </ul>
+    <div class="offer-footer">
+      <div>
+        <div class="offer-price">$197 <span>$297</span></div>
+        <div style="font-size:0.72rem; color: var(--mid-gray); margin-top:4px;">Intro price · First 3 clients only</div>
+      </div>
+      <button class="offer-cta" onclick="alert('Book your spot with Daisy · Prompt Engineer — DM me on TikTok or Instagram!')">Book Your Spot →</button>
+    </div>
+  </div>
+
+  <!-- Testimonial placeholders -->
+
+  <div class="testimonials fade-up">
+    <div class="testi">
+      <div class="testi-text">"I was spending 3 hours writing TikTok scripts. Now it takes 20 minutes and they actually perform. My last reel hit 400K views."</div>
+      <div class="testi-author">Keisha M.</div>
+      <div class="testi-role">Hair & Wig Creator · 42K followers</div>
+    </div>
+    <div class="testi">
+      <div class="testi-text">"My hooks were bland and I knew it. After getting my AI system built, my save rate went up immediately. Worth every dollar."</div>
+      <div class="testi-author">Toni R.</div>
+      <div class="testi-role">Beauty Business Owner · Shopify Store</div>
+    </div>
+    <div class="testi">
+      <div class="testi-text">"I thought AI always sounded robotic. This actually sounds like me — my audience didn't even notice I changed my process."</div>
+      <div class="testi-author">Ava D.</div>
+      <div class="testi-role">Lifestyle Creator · 28K followers</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-logo">Daisy · Prompt Engineer</div>
+  <div class="footer-note">Prompt Engineer · TikTok AI Specialist · Available for new clients</div>
+</footer>
+
+<script>
+// ============ CHAT SIMULATOR ============
+const conversations = {
+  start: {
+    them: "Hey! I saw your message. You rewrote some of my hooks? 👀",
+    tip: "💡 Tip: She's curious but cautious. Don't pitch yet — just deliver value and let her reaction open the door.",
+    choices: [
+      { label: "Yes! I made 3 versions for you 🎁", next: "delivered" },
+      { label: "Yeah I'd love to show you — got 2 mins?", next: "buildRapport" }
+    ]
+  },
+  delivered: {
+    them: "Oh wow these are actually really good 😭 How did you do that?",
+    tip: "💡 Tip: She's impressed. Now briefly explain what you do WITHOUT overexplaining. One sentence is enough.",
+    choices: [
+      { label: "I build custom AI prompt systems for creators like you 🙌", next: "explain" },
+      { label: "I engineered a prompt trained specifically on your voice & niche!", next: "explain" }
+    ]
+  },
+  buildRapport: {
+    them: "Sure! I've been struggling with hooks honestly. They feel generic lately 😩",
+    tip: "💡 Tip: She just told you her pain point. Reflect it back, then deliver the proof.",
+    choices: [
+      { label: "Exactly — that's what I fixed! Here are 3 new hooks for your page 👇", next: "delivered" },
+      { label: "Generic AI hooks kill engagement. I wrote yours in your actual voice — want to see?", next: "delivered" }
+    ]
+  },
+  explain: {
+    them: "Wait so you do this for other creators? How much do you charge?",
+    tip: "💡 Tip: NEVER apologize for your price. State it confidently with what they get. Then stop talking.",
+    choices: [
+      { label: "My intro offer is $197 — full AI voice system + hooks + scripts, delivered in 5 days 📦", next: "price" },
+      { label: "I have a $197 starter package. Includes your full prompt system, 10 hooks, and 30 captions all in your voice.", next: "price" }
+    ]
+  },
+  price: {
+    them: "Hmm $197... I don't know, I've never paid for something like this before 🤔",
+    tip: "💡 Tip: Objection = she needs more justification, not a discount. Show her the math.",
+    choices: [
+      { label: "Totally fair — how many hours a week do you spend writing content?", next: "mathClose" },
+      { label: "What if it saved you 5+ hours a week and boosted your engagement? That's the ROI 📈", next: "valueClose" }
+    ]
+  },
+  mathClose: {
+    them: "Honestly like 4-5 hours easy 😭",
+    tip: "💡 Tip: Perfect. Do the math WITH her. Make the $197 feel small compared to her time.",
+    choices: [
+      { label: "So 5hrs × 4 weeks = 20 hrs/mo. What's your time worth? $197 is less than one hour of your time back. 🧮", next: "closing" }
+    ]
+  },
+  valueClose: {
+    them: "When you put it that way... okay that makes sense 👀",
+    tip: "💡 Tip: She's warming up. Ask for the sale directly but give her an easy next step.",
+    choices: [
+      { label: "Want me to get started on yours this week? I only take 3 clients at a time 🙌", next: "closing" }
+    ]
+  },
+  closing: {
+    them: "Okay yeah I'm actually interested. What do I need to do?",
+    tip: "💡 Tip: Don't overcomplicate this. One clear next step only. No giant forms, no calls required.",
+    choices: [
+      { label: "Just send me payment via [CashApp/PayPal] and I'll send you a short voice questionnaire to start! 🎉", next: "done" }
+    ]
+  },
+  done: {
+    them: "Sent! 🙏 Can't wait to see what you come up with for my page!",
+    tip: "✅ YOU CLOSED IT! Key moves: delivered value first → explained briefly → stated price confidently → handled objection with math → one clear CTA. Practice this until it's natural.",
+    choices: [
+      { label: "🔄 Restart Simulation", next: "restart" }
+    ]
+  }
+};
+
+let currentStep = 'start';
+let msgDelay = 0;
+
+function addMessage(text, type, label) {
+  const msgs = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = `msg ${type}`;
+  msg.style.animationDelay = `${msgDelay}ms`;
+  msgDelay += 120;
+  msg.innerHTML = `
+    <div>
+      <div class="msg-bubble">${text}</div>
+      <div class="msg-label">${label}</div>
+    </div>`;
+  msgs.appendChild(msg);
+  setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 50);
+}
+
+function renderStep(step) {
+  const data = conversations[step];
+  const actions = document.getElementById('chatActions');
+  const tip = document.getElementById('chatTip');
+
+  msgDelay = 0;
+  addMessage(data.them, 'them', 'Wigs by Destiny');
+
+  tip.innerHTML = `<strong>${data.tip.split(':')[0]}:</strong>${data.tip.split(':').slice(1).join(':')}`;
+
+  actions.innerHTML = '';
+  data.choices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'chat-btn';
+    btn.textContent = choice.label;
+    btn.onclick = () => {
+      if (choice.next === 'restart') {
+        document.getElementById('chatMessages').innerHTML = '';
+        currentStep = 'start';
+        renderStep('start');
+        return;
+      }
+      addMessage(choice.label, 'you', 'You (Prompt Engineer)');
+      actions.innerHTML = '';
+      setTimeout(() => renderStep(choice.next), 600);
+    };
+    actions.appendChild(btn);
+  });
+}
+
+// SCROLL ANIMATIONS
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// INIT CHAT
+renderStep('start');
+</script>
+
+</body>
+</html>
